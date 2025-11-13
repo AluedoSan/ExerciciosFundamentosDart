@@ -1,2 +1,4 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+## Os exercícios estão separados na pasta lib.
+Para executá-los basta usar o comando
+<pre> >> dart arquivo.dart </pre>
+Todos os exercícios dos capítulos estão armazenados dentro de seus arquivos correspondentes e com um menu para execução de cada.
