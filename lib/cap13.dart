@@ -294,10 +294,276 @@ void desafio07(){
     }
   }
 }
+
+// --- CLASSE PARA O DESAFIO 8 ---
+class Aniversariante {
+  String nome;
+  int dia;
+  int mes;
+  Aniversariante(this.nome, this.dia, this.mes);
+  
+  @override
+  String toString() {
+    // Helper para formatar a data
+    String diaStr = dia.toString().padLeft(2, '0');
+    String mesStr = mes.toString().padLeft(2, '0');
+    return "Nome: $nome, Data: $diaStr/$mesStr";
+  }
+}
+
+// Lista global para a agenda (limite de 15)
+List<Aniversariante> agenda = [];
+
+/////////
+// Desafio 8 (agenda de aniversariantes)
+void desafio08() {
+  print("\n--- Desafio 8: Agenda de Aniversariantes ---");
+  
+  while (true) {
+    print("\nAGENDA (Limite de 15 pessoas. Atual: ${agenda.length})");
+    print("1. Cadastrar pessoa");
+    print("2. Excluir pessoa (por nome)");
+    print("3. Alterar data (por nome)");
+    print("4. Consultar (por data)");
+    print("5. Consultar (por mês)");
+    print("6. Consultar (por letra inicial)");
+    print("7. Mostrar agenda (ordenada por nome)");
+    print("8. Mostrar agenda (ordenada por mês)");
+    print("9. Sair");
+    int op = readInt("Opção: ");
+
+    if (op == 9) break;
+
+    switch (op) {
+      case 1: // Cadastrar
+        if (agenda.length >= 15) {
+          print("  Agenda cheia! Limite de 15 pessoas atingido.");
+          break;
+        }
+        String nome = readString("  Nome: ");
+        int dia = readInt("  Dia (DD): ");
+        int mes = readInt("  Mês (MM): ");
+        agenda.add(Aniversariante(nome, dia, mes));
+        print("  $nome cadastrado com sucesso.");
+        break;
+
+      case 2: // Excluir
+        String nomeExcluir = readString("  Nome para excluir: ");
+        int lenAntes = agenda.length;
+        agenda.removeWhere((p) => p.nome.toUpperCase() == nomeExcluir.toUpperCase());
+        if (agenda.length < lenAntes) {
+          print("  $nomeExcluir excluído.");
+        } else {
+          print("  $nomeExcluir não encontrado.");
+        }
+        break;
+        
+      case 3: // Alterar
+        String nomeAlterar = readString("  Nome para alterar: ");
+        try {
+          var p = agenda.firstWhere((p) => p.nome.toUpperCase() == nomeAlterar.toUpperCase());
+          print("  Alterando data de ${p.nome}.");
+          p.dia = readInt("  Novo Dia (DD): ");
+          p.mes = readInt("  Novo Mês (MM): ");
+          print("  Data alterada.");
+        } catch (e) {
+          print("  $nomeAlterar não encontrado.");
+        }
+        break;
+        
+      case 4: // Consultar Data
+        int diaBusca = readInt("  Digite o Dia (DD): ");
+        int mesBusca = readInt("  Digite o Mês (MM): ");
+        var achados = agenda.where((p) => p.dia == diaBusca && p.mes == mesBusca);
+        if (achados.isEmpty) {
+          print("  Ninguém faz aniversário nesta data.");
+        } else {
+          achados.forEach(print);
+        }
+        break;
+        
+      case 5: // Consultar Mês
+        int mesBusca = readInt("  Digite o Mês (MM): ");
+        var achados = agenda.where((p) => p.mes == mesBusca);
+        if (achados.isEmpty) {
+          print("  Ninguém faz aniversário neste mês.");
+        } else {
+          achados.forEach(print);
+        }
+        break;
+        
+      case 6: // Consultar Letra
+        String letra = readString("  Digite a letra inicial: ");
+        if (letra.isEmpty) break;
+        var achados = agenda.where((p) => p.nome.toUpperCase().startsWith(letra.toUpperCase()));
+        if (achados.isEmpty) {
+          print("  Ninguém com esta inicial.");
+        } else {
+          achados.forEach(print);
+        }
+        break;
+        
+      case 7: // Ordenar Nome
+        print("--- Agenda (Ordenada por Nome) ---");
+        var ordenadaNome = List<Aniversariante>.from(agenda);
+        ordenadaNome.sort((a, b) => a.nome.compareTo(b.nome));
+        ordenadaNome.forEach(print);
+        break;
+        
+      case 8: // Ordenar Mês
+        print("--- Agenda (Ordenada por Mês) ---");
+        var ordenadaMes = List<Aniversariante>.from(agenda);
+        ordenadaMes.sort((a, b) {
+          int mesComp = a.mes.compareTo(b.mes);
+          if (mesComp != 0) return mesComp;
+          return a.dia.compareTo(b.dia); // Se o mês for igual, ordena pelo dia
+        });
+        ordenadaMes.forEach(print);
+        break;
+
+      default:
+        print("Opção inválida.");
+    }
+  }
+}
+
+//////////
+// Desafio 9 (Funcionários)
+void desafio09() {
+  print("\n--- Desafio 9: Relatório de Funcionários ---");
+  List<int> codigos = [];
+  List<double> salarios = [];
+  List<int> tempo = [];
+  // 1. Carregar os vetores (só na primeira vez)
+  if (codigos.isEmpty) {
+    print("Cadastrando 5 funcionários...");
+    for (int i = 1; i <= 5; i++) {
+      print("--- Funcionário $i ---");
+      codigos.add(readInt("  Código: "));
+      salarios.add(readDouble("  Salário: R\$ "));
+      tempo.add(readInt("  Tempo de Serviço (anos): "));
+    }
+  } else {
+    print("Funcionários já cadastrados.");
+  }
+  
+  // a) Relatórios por valor
+  print("\n--- (a) Consulta por Salário ---");
+  double valorConsulta = readDouble("Digite o salário para consulta: R\$ ");
+  
+  List<String> relatorioAte = [];
+  List<String> relatorioAcima = [];
+  
+  for (int i = 0; i < 5; i++) {
+    String info = "Cód: ${codigos[i]}, Salário: R\$ ${salarios[i]}";
+    if (salarios[i] <= valorConsulta) {
+      relatorioAte.add(info);
+    } else {
+      relatorioAcima.add(info);
+    }
+  }
+  
+  print("\nRelatório 1 (Salário <= R\$ $valorConsulta):");
+  if (relatorioAte.isEmpty) {print("  Nenhum funcionário neste relatório.");}
+  else {relatorioAte.forEach(print);}
+  
+  print("\nRelatório 2 (Salário > R\$ $valorConsulta):");
+  if (relatorioAcima.isEmpty) {print("  Nenhum funcionário neste relatório.");}
+  else {relatorioAcima.forEach(print);}
+
+  // b) Menor Salário
+  print("\n--- (b) Análise do Menor Salário ---");
+  double menorSalario = salarios[0];
+  for (double s in salarios) {
+    if (s < menorSalario) menorSalario = s;
+  }
+  
+  List<int> codigosMenorSalario = [];
+  for (int i = 0; i < 5; i++) {
+    if (salarios[i] == menorSalario) {
+      codigosMenorSalario.add(codigos[i]);
+    }
+  }
+  
+  print("Menor Salário Pago: R\$ $menorSalario");
+  print("Quantos funcionários recebem: ${codigosMenorSalario.length}");
+  print("Códigos desses funcionários: $codigosMenorSalario");
+  
+  // c) Vetor de Isentos
+  print("\n--- (c) Vetor de Isentos de Imposto ---");
+  List<int> vetorIsentos = [];
+  for (int i = 0; i < 5; i++) {
+    int tempos = tempo[i];
+    double salario = salarios[i];
+    
+    // Tempo entre 2 e 4 anos E Salário < 1500
+    if ((tempos >= 2 && tempos <= 4) && (salario < 1500.00)) {
+      vetorIsentos.add(codigos[i]);
+    }
+  }
+  
+  if (vetorIsentos.isEmpty) {
+    print("Nenhum funcionário preenche os requisitos.");
+  } else {
+    print("Códigos dos funcionários isentos (Tempo 2-4 anos, Salário < R\$ 1500):");
+    print("$vetorIsentos");
+  }
+}
+
+/////////
+/// Desafio 10 (vetores desordenados)
+void desafio10() {
+  print("\n--- Desafio 10: Vetores Desordenados ---");
+  List<int> vetor = [];
+  while (true){
+    int valor = readInt("Escolha uma das opções:\n1. Adicionar número ao vetor\n2. Mostrar vetor\n3. Consultar um númeroo vetor\n4. Excluir um número do vetor\n0. Sair\nOpção: ");
+    switch (valor) {
+      case 1:
+        int numAdicionar = readInt("Digite o número para adicionar: ");
+        vetor.add(numAdicionar);
+        print("Número $numAdicionar adicionado.");
+        break;
+      case 2:
+        print("Vetor atual: $vetor");
+        break;
+      case 3:
+        int numConsultar = readInt("Digite o número para consultar: ");
+        if (vetor.contains(numConsultar)) {
+          print("Número $numConsultar encontrado no vetor.");
+        } else {
+          print("Número $numConsultar não encontrado no vetor.");
+        }
+        break;
+      case 4:
+        int numExcluir = readInt("Digite o número para excluir: ");
+        if (vetor.remove(numExcluir)) {
+          print("Número $numExcluir excluído do vetor.");
+        } else {
+          print("Número $numExcluir não encontrado no vetor.");
+        }
+        break;
+      case 0:
+        print("Encerrando o desafio 10.");
+        return;
+      default:
+        print("Opção inválida. Tente novamente.");
+    }
+  }
+}
+
+/////////
+// Desafio 11 (vetores desordenados)
+void desafio11(){
+  print("\n--- Desafio 11: Vetores Ordenados ---");
+  List<int> vetor = [];
+  while (true){}
+}
+
+
 // Mapa de exercícios para fácil acesso
 final exercicios = <int, Function>{
   1: desafio01, 2: desafio02, 3: desafio03, 4: desafio04, 5: desafio05,
-  6: desafio06, 7: desafio07,
+  6: desafio06, 7: desafio07, 8: desafio08, 9: desafio09, 10: desafio10,
 };
 
 // Função principal que exibe o menu e gerencia a execução
@@ -315,6 +581,10 @@ void main() {
     print("5. Alterar Cliente");
     print("6. Número por Extenso");
     print("7. Jogo da Forca");
+    print("8. Agenda de Aniversariantes");
+    print("9. Relatório de Funcionários");
+    print("10. Vetores Desordenados");
+    print("11. Vetores Ordenados");
 
     print("\n0. Sair");
 

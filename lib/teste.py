@@ -39,7 +39,7 @@ eu.adicionar_moradia()
 print(eu.moradia)
 eu.saudacoes(a(2, 3))"""
 
-a = int(input("DIGITE AGORA: "))
+"""a = int(input("DIGITE AGORA: "))
 
 b = ""
 
@@ -93,4 +93,74 @@ def decimais(num):
 p, o = decimais(y)
 if p != None:
     b += p + " "
-print(b)
+print(b)"""
+
+"""funcionarios = [[1, 3200, 5], [2, 1500, 2], [3, 4000, 10], [4, 2800, 3], [5, 5000, 8]]
+relatorio_mais = ""
+relatorio_menos = ""
+relatorio_neutro = 0
+valor = 2000
+count = 0
+codigo_menor_salario = []
+menor_salario = funcionarios[0][1]
+for funcionario in funcionarios:
+    if funcionario[1] > valor:
+        relatorio_mais += f"Funcionário {funcionario[0]} recebe {funcionario[1]}\n"
+    elif funcionario[1] <= valor:
+        relatorio_menos += f"Funcionário {funcionario[0]} recebe {funcionario[1]} e está abaixo do valor base\n"
+        if count == 0:
+            codigo_menor_salario.append(funcionario[0])
+            menor_salario = funcionario[1]
+        else:
+            if funcionario[1] < menor_salario:
+                codigo_menor_salario.append(funcionario[0])
+                menor_salario = funcionario[1]
+
+            elif funcionario[1] == menor_salario:
+                codigo_menor_salario.append(funcionario[0])
+    else:
+        relatorio_neutro += 1
+    count += 1
+
+if relatorio_neutro == 5:
+    relatorio_neutro = "Nenhum funcionário está na faixa solicitada."
+else:
+    print("Relatórios gerados com sucesso.")
+print("Funcionários que recebem acima do valor base:")
+print(relatorio_mais)
+print("Funcionários que recebem abaixo do valor base:")
+print(relatorio_menos)
+
+print(f"Funcionário(s) com menor salário: {codigo_menor_salario} com o valor de {menor_salario}")"""
+
+
+vetor = []
+
+while True:
+    n = int(input("Escolha um das opções abaixo: \n1 - Adicionar número ao vetor\n2 - Mostrar vetor\n3 - Consultar UM número do vetor\n4 - Excluir um número do vetor\n5 - Sair\n"))
+    match n:
+        case 1:
+            num = int(input("Digite o número a ser adicionado: "))
+            vetor.append(num)
+            print(f"Número {num} adicionado com sucesso.")
+        case 2:
+            print("Vetor atual:")
+            print(vetor)
+        case 3:
+            num = int(input("Digite o número a ser consultado: "))
+            if num in vetor:
+                print(f"Número {num} encontrado no vetor.")
+            else:
+                print(f"Número {num} não encontrado no vetor.")
+        case 4:
+            num = int(input("Digite o número a ser excluído: "))
+            if num in vetor:
+                vetor.remove(num)
+                print(f"Número {num} excluído com sucesso.")
+            else:
+                print(f"Número {num} não encontrado no vetor.")
+        case 5:
+            print("Saindo do programa.")
+            break
+        case _:
+            print("Opção inválida. Tente novamente.")
