@@ -116,31 +116,188 @@ void desafio04() {
   print("Binário: $binario");
 }
 
-// Desafio 05 ()
-void desafio05(){
-  print("\n--- Desafio 5: ---");
-
+// Desafio 5 (Custo Condomínio)
+void desafio05() {
+  print("\n--- Desafio 5: Custo Mão de Obra Condomínio ---");
+  
+  double L = readDouble("Digite o valor base 'L' da planta (em metros): ");
+  double salarioMinimo = readDouble("Digite o valor do salário mínimo: R\$ ");
+  
+  // 1. Áreas individuais baseadas no diagrama
+  double areaSalas = (4 * L) * (2 * L);                  // 8L²
+  double areaQuartos = 4 * (L * L);                      // 4L²
+  double areaCopaCozinha = (3 * L * L) + ((3 * L) * (L * 0.7) / 2); // 3L² + 1.05L² = 4.05L²
+  double areaEsc = (L * L) / 2;                          // 0.5L²
+  double raioWC = (L / 2) / 2;                           // Raio = Diâmetro(L/2) / 2 = L/4
+  double areaWCs = 4 * (pi * pow(raioWC, 2));            // 4 * (pi * (L/4)²) = (pi/4)L²
+  
+  // 2. Área total da casa
+  double areaTotalCasa = areaSalas + areaQuartos + areaCopaCozinha + areaEsc + areaWCs;
+  
+  // 3. Custos
+  double custoM2 = salarioMinimo * 0.10; // 10% do salário mínimo
+  double custoCasa = areaTotalCasa * custoM2;
+  double custoCondominio = custoCasa * 40; // 40 casas
+  
+  print("\n--- Detalhes do Cálculo (para L = $L) ---");
+  print("  Área Salas (8L²): ${areaSalas.toStringAsFixed(2)} m²");
+  print("  Área Quartos (4L²): ${areaQuartos.toStringAsFixed(2)} m²");
+  print("  Área Copa/Cozinha (4.05L²): ${areaCopaCozinha.toStringAsFixed(2)} m²");
+  print("  Área Escada (0.5L²): ${areaEsc.toStringAsFixed(2)} m²");
+  print("  Área 4 WCs ( (pi/4)L² ): ${areaWCs.toStringAsFixed(2)} m²");
+  print("  ---------------------------------");
+  print("  Área Total (1 Casa): ${areaTotalCasa.toStringAsFixed(2)} m²");
+  
+  print("\n--- Custo da Mão de Obra ---");
+  print("  Salário Mínimo: R\$ ${salarioMinimo.toStringAsFixed(2)}");
+  print("  Custo por m² (10%): R\$ ${custoM2.toStringAsFixed(2)}");
+  print("  Custo (1 Casa): R\$ ${custoCasa.toStringAsFixed(2)}");
+  print("  ---------------------------------");
+  print("  Custo Total (40 Casas):");
+  print("  ==> R\$ ${custoCondominio.toStringAsFixed(2)}");
 }
+/////////
+// Variáveis e funções auxiliares para o Desafio 6
+final listaUnidades = {
+  0: "zero", 1: "um", 2: "dois", 3: "três", 4: "quatro",
+  5: "cinco", 6: "seis", 7: "sete", 8: "oito", 9: "nove"
+};
+final listaTeens = {
+  10: "dez", 11: "onze", 12: "doze", 13: "treze", 14: "quatorze",
+  15: "quinze", 16: "dezesseis", 17: "dezessete", 18: "dezoito", 19: "dezenove"
+};
+final listaDezenas = {
+  2: "vinte", 3: "trinta", 4: "quarenta", 5: "cinquenta",
+  6: "sessenta", 7: "setenta", 8: "oitenta", 9: "noventa"
+};
+final listaCentenas = {
+  1: "cento", 2: "duzentos", 3: "trezentos", 4: "quatrocentos",
+  5: "quinhentos", 6: "seiscentos", 7: "setecentos", 8: "oitocentos", 9: "novecentos"
+};
 
 // Desafio 06 (Numero por extenso de 1 a 10,000)
 void desafio06(){
   print("\n--- Desafio 6: Número por extenso ---");
   // Recebe o input do usuário
   int num = readInt(">> Digite o número: ");
-  var listaNome = {
-    "unidades": ["um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"],
-    "teens": ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"],
-    "decimais": ["vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"],
-    "centena": ["cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"],
-  };
+  String extenso = numeroPorExtenso(num);
+  print("Número por extenso: $extenso");
 }
 
+// Método para converter número em extenso
+String numeroPorExtenso(int num) {
+  // Verificando se está na casa dos milhares
+  if (num ~/ 1000 == 0){
+    return centenas(num);
+  }
+  else {
+    String resultado = "";
+    int milhares = num ~/ 1000;
+    resultado += "${listaUnidades[milhares]} mil";
+    int resto = num % 1000;
+    if (resto > 0) {
+      resultado += " ${centenas(resto)}";
+    }
+    return resultado;
+  }
+}
+
+// Método para converter centenas
+String centenas(int num) {
+  if (num < 100) {
+    return dezenas(num);
+  } else {
+    int centena = num ~/ 100;
+    String resultado = "";
+    if (centena == 1 && num % 100 == 0) {
+      return "cem";
+    } else {
+      resultado += listaCentenas[centena]!;
+      int resto = num % 100;
+      if (resto > 0) {
+        resultado += " e ${dezenas(resto)}";
+      }
+      return resultado;
+    }
+  }
+}
+
+// Método para converter dezenas
+String dezenas(int num) {
+  if (num < 10) {
+    return listaUnidades[num]!;
+  } else if (num < 20) {
+    return listaTeens[num]!;
+  } else {
+    int dezena = num ~/ 10;
+    String resultado = listaDezenas[dezena]!;
+    int resto = num % 10;
+    if (resto > 0) {
+      resultado += " e ${listaUnidades[resto]}";
+    }
+    return resultado;
+  }
+}
+
+////////
+// Desafio 07 (Jogo da forca)
+void desafio07(){
+  print("\n--- Desafio 7: Jogo da Forca ---");
+  List<String> palavras = [];
+  List<String> dicas = [];
+  for (var i = 0; i < 10; i++) {
+    palavras.add(readString("Digite a ${i+1}ª palavra: "));
+    dicas.add(readString("Digite a dica para a ${i+1}ª palavra: "));
+  }
+  print("Sorteando a palavra...");
+  Random rand = Random();
+  int indiceSorteado = rand.nextInt(10);
+  String palavraSorteada = palavras[indiceSorteado];
+  List palavraSorteadaLista = palavraSorteada.split('');
+  String dicaSorteada = dicas[indiceSorteado];
+  String palavraOculta = "_" * palavraSorteada.length;
+  int tentativas = 7;
+  List letrasUsadas = [];
+  print("Adivinhe a palavra sorteada!");
+  print("Palavra: $palavraOculta");
+  while (tentativas > 0) {
+    var letra = readString("Digite uma letra:  ").toUpperCase();
+    if (letra.length != 1 || !RegExp(r'^[A-Z]$').hasMatch(letra)) {
+      print("Entrada inválida. Por favor, digite apenas uma letra.");
+      continue;
+    } // Verificação se apenas uma letra foi digitada
+    if (letrasUsadas.contains(letra)) {
+      print("Você já usou essa letra. Tente outra.");
+    }
+    else {
+      letrasUsadas.add(letra); // Adiciona letra à lista de usadas
+      if (palavraSorteadaLista.contains(letra)) {
+        print("Boa! A letra '$letra' está na palavra.");
+        for (var j = 0; j < palavraSorteadaLista.length; j++) {
+          if (palavraSorteadaLista[j] == letra) {
+            palavraOculta = palavraOculta.substring(0, j) + letra + palavraOculta.substring(j + 1); // Atualiza a palavra oculta
+          }
+        }
+        print("Palavra: $palavraOculta");
+        if (!palavraOculta.contains("_")) {
+          print("Parabéns! Você adivinhou a palavra '$palavraSorteada'!");
+          return;
+        }
+      } else { // Contador de tentativas
+        print("A letra '$letra' não está na palavra."); 
+        tentativas--;
+        print("Tentativas restantes: $tentativas");
+        if (tentativas == 1){
+          print("Dica: $dicaSorteada");
+        }
+      }
+    }
+  }
+}
+// Mapa de exercícios para fácil acesso
 final exercicios = <int, Function>{
   1: desafio01, 2: desafio02, 3: desafio03, 4: desafio04, 5: desafio05,
-  6: ex06, 7: ex07, 8: ex08, 9: ex09, 10: ex10,
-  11: ex11, 12: ex12, 13: ex13, 14: ex14, 15: ex15,
-  16: ex16, 17: ex17, 18: ex18, 19: ex19, 20: ex20,
-  21: ex21, 22: ex22, 23: ex23, 24: ex24, 25: ex25,
+  6: desafio06, 7: desafio07,
 };
 
 // Função principal que exibe o menu e gerencia a execução
@@ -156,6 +313,8 @@ void main() {
     print("3. Cálculo da Escada");
     print("4. Decimal para Binário");
     print("5. Alterar Cliente");
+    print("6. Número por Extenso");
+    print("7. Jogo da Forca");
 
     print("\n0. Sair");
 
