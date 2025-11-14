@@ -70,6 +70,8 @@ void ex04MaiorNumero() {
   double n2 = readDouble("Digite o número 2: ");
   double n3 = readDouble("Digite o número 3: ");
   double maior = max(n1, max(n2, n3));
+  // List maior = [n1, n2, n3].reduce(max); outra forma de fazer
+  // reduce pega da esquerda para a direita aplicando a função max, para ir comparando os valores
   print("O maior número é: $maior");
 }
 
@@ -126,7 +128,7 @@ void ex06MenuOperacoes2() {
 
   switch (op) {
     case 1:
-      print("$n1 elevado a $n2 = ${pow(n1, n2)}");
+      print("$n1 elevado a $n2 = ${pow(n1, n2)}"); // pow pega o valor da base e eleva à potência do expoente, (n1 é a base e n2 o expoente)
       break;
     case 2:
       print("Raiz quadrada de $n1: ${sqrt(n1).toStringAsFixed(2)}");
@@ -245,7 +247,7 @@ void ex13NovoPrecoClassificacao() {
 
   double novoPreco = preco + aumento;
   String classif;
-  
+
   if (novoPreco <= 80) {classif = "Barato";}
   else if (novoPreco <= 120) {classif = "Normal";}
   else if (novoPreco <= 200) {classif = "Caro";}
@@ -372,7 +374,7 @@ void ex21ProcedenciaProduto() {
   else if (cod == 5 || cod == 6) {proc = "Nordeste";}
   else if (cod >= 7 && cod <= 9) {proc = "Sudeste";}
   else if (cod >= 10 && cod <= 20) {proc = "Centro-oeste";}
-  else if (cod >= 21 && cod <= 50) {proc = "Nordeste";}
+  else if (cod >= 21 && cod <= 30) {proc = "Nordeste";}
   else {proc = "Código inválido";}
   
   print("Preço: R\$ ${preco.toStringAsFixed(2)}");

@@ -43,7 +43,7 @@ void escreverLinhasSync(String path, List<String> lines) {
 void anexarLinhaSync(String path, String line) {
   try {
     File file = File(path);
-    file.writeAsStringSync(line + '\n', mode: FileMode.append);
+    file.writeAsStringSync('$line\n', mode: FileMode.append);
   } catch (e) {
     print("Erro ao anexar $path: $e");
   }

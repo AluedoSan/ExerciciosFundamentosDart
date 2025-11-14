@@ -39,15 +39,13 @@ eu.adicionar_moradia()
 print(eu.moradia)
 eu.saudacoes(a(2, 3))"""
 
-print(2222 % 1000)
-
 a = int(input("DIGITE AGORA: "))
 
-
+b = ""
 
 def centena(num):
     mn = num // 100
-    nm = num % 100
+    
     if mn == 0:
         return
     lista = {
@@ -63,12 +61,36 @@ def centena(num):
     }
     for x in lista:
         if x == mn:
-            return f"{lista[x]}", nm
+            return f"{lista[x]}", num % 100
+
 
 x, y = centena(a)
+if x != None:
+    b += x + " "
+listaTeens = ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"]
+
 print(x, y)
 def decimais(num):
-    mn = num // 10 
+    mn = num // 10
+    if mn == 1:
+        return listaTeens[num % 10], None
+    lista = {
+        2: "vinte",
+        3: "trinta",
+        4: "quarenta",
+        5: "cinquenta",
+        6: "sessenta",
+        7: "setenta",
+        8: "oitenta",
+        9: "noventa",
+    }
+    for x in lista:
+        if x == mn:
+            return f"{lista[x]}", num % 10
+
     print(mn)
 
-p, l = decimais(y)
+p, o = decimais(y)
+if p != None:
+    b += p + " "
+print(b)
