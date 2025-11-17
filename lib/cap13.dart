@@ -593,11 +593,128 @@ void desafio11(){
   }
 }
 
+// --- CLASSES PARA O DESAFIO 12 ---
+class Funcionarios{
+  late List<String> nome;
+  late List<int> codigoCargo;
+  late List<int> codigo;
+}
+// --- SUBROTINAS PARA O DESAFIO 12 ---
+void cadastroCargos(List<double> cargosSalarios){
+  if (cargosSalarios.isEmpty){
+    print("Cadastrando 5 cargos...");
+    for (int i = 1; i <= 5; i++) {
+      double salarioBase = readDouble("  Salário base do cargo $i: R\$ ");
+      cargosSalarios.add(salarioBase);
+  }
+  } else {
+    print("Cargos já cadastrados.");
+  }
+}
+
+void cadastroFuncionarios(Funcionarios funcionarios){
+  if (funcionarios.nome.length >= 15){
+    print("Limite de 15 funcionários atingido.");
+    return;
+  }else{
+    print("Cadastrando um novo funcionário...");
+    String nomeFunc = readString("  Nome do funcionário: "); // Verificação do nome com a subrotina
+    if (verficarNome(nomeFunc) == false){
+      return;
+    }
+    int codigoCargo = readInt("  Código do cargo (1-5): "); // Verificação do código do cargo se está entre os valores válidos
+    if (codigoCargo < 1 || codigoCargo > 5){
+      print("  Código de cargo inválido. Deve ser entre 1 e 5.");
+      return;
+    }
+    int codigoFunc = readInt("  Código do funcionário: "); // Verificação do código do funcionário com a subrotina
+    if (verificarCodigo(funcionarios.codigo, codigoFunc) == false){
+      return;
+    }
+    // Inserir os dados nos vetores
+    funcionarios.nome.add(nomeFunc);
+    funcionarios.codigoCargo.add(codigoCargo);
+    funcionarios.codigo.add(codigoFunc);
+    print("Funcionário $nomeFunc cadastrado com sucesso.");
+  }
+}
+
+void mostrarFuncionarios(Funcionarios funcionarios){
+  print("\n--- Lista de Funcionários Cadastrados ---");
+  for (int i = 0; i < funcionarios.nome.length; i++){
+    print("Nome: ${funcionarios.nome[i]}, Código do Cargo: ${funcionarios.codigoCargo[i]}, Código do Funcionário: ${funcionarios.codigo[i]}");
+  }
+}
+
+bool verificarCodigo(List<int> codigos, int codigo){
+  if (codigos.contains(codigo)){
+    print("Código $codigo já existe. Tente outro.");
+    return false;
+  } else {
+    print("Código $codigo disponível.");
+    return true;
+  }
+}
+
+bool verficarNome(String nome){
+  if (nome.split(" ").length < 2){
+    print("Nome inválido. Deve conter pelo menos nome e sobrenome.");
+    return false;
+  }
+  return true;
+}
+
+void salarioCargo(List<double> cargosSalarios, Funcionarios funcionarios){
+  double salarioBase = 0.0;
+  int codigoCargo = readInt("Digite o código do cargo (1-5) para consultar o salário: ");
+  if (codigoCargo < 1 || codigoCargo > 5){
+    print("Código de cargo inválido. Deve ser entre 1 e 5.");
+    return;
+  }
+  for (int i = 0; i < funcionarios.codigoCargo.length; i++){
+    if (funcionarios.codigoCargo[i] == codigoCargo){
+      salarioBase += cargosSalarios[codigoCargo - 1];
+      print("A somatória salarial do cargo $codigoCargo é R\$ ${salarioBase.toStringAsFixed(2)}");
+    }
+  }
+  
+}
+
 /////////
 // Desafio 12 (Departamento de Pessoal)
 void desafio12() {
   print("\n--- Desafio 12: Departamento de Pessoal ---");
-  print("Desafio em construção...");
+  Funcionarios funcionarios = Funcionarios();
+  List<double> cargosSalarios = [];
+  while (true){
+    print("\nMENU DE OPÇÕES:");
+    print("1. Cadastrar Cargos");
+    print("2. Cadastrar Funcionários");
+    print("3. Gerar Relatório de Salários");
+    print("4. Mostrar valor do cargo");
+    print("0. Sair");
+    int opcao = readInt("Escolha uma opção: ");
+    
+    switch (opcao) {
+      case 1:
+        cadastroCargos(cargosSalarios);
+        break;
+      case 2:
+        cadastroFuncionarios(funcionarios);
+        break;
+      case 3:
+        // Implementar geração de relatório de salários
+        break;
+      case 4:
+        // Implementar geração de relatório de salários
+        break;
+      case 0:
+        print("Encerrando o desafio 12.");
+        return;
+      default:
+        print("Opção inválida. Tente novamente.");
+    }
+  }
 }
 
 
