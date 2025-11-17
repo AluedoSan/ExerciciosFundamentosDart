@@ -595,9 +595,9 @@ void desafio11(){
 
 // --- CLASSES PARA O DESAFIO 12 ---
 class Funcionarios{
-  late List<String> nome;
-  late List<int> codigoCargo;
-  late List<int> codigo;
+  List<String> nome = [];
+  List<int> codigoCargo = [];
+  List<int> codigo = [];
 }
 // --- SUBROTINAS PARA O DESAFIO 12 ---
 void cadastroCargos(List<double> cargosSalarios){
@@ -665,6 +665,10 @@ bool verficarNome(String nome){
 }
 
 void salarioCargo(List<double> cargosSalarios, Funcionarios funcionarios){
+  if (cargosSalarios.isEmpty){
+    print("Nenhum cargo cadastrado. Cadastre os cargos primeiro.");
+    return;
+  }
   double salarioBase = 0.0;
   int codigoCargo = readInt("Digite o código do cargo (1-5) para consultar o salário: ");
   if (codigoCargo < 1 || codigoCargo > 5){
@@ -703,10 +707,10 @@ void desafio12() {
         cadastroFuncionarios(funcionarios);
         break;
       case 3:
-        // Implementar geração de relatório de salários
+        mostrarFuncionarios(funcionarios);
         break;
       case 4:
-        // Implementar geração de relatório de salários
+        salarioCargo(cargosSalarios, funcionarios);
         break;
       case 0:
         print("Encerrando o desafio 12.");
@@ -717,11 +721,118 @@ void desafio12() {
   }
 }
 
+//////////
+// Desafio 13 (Número Narcisista)
+void desafio13() {
+  print("\n--- Desafio 13: Número Narcisista ---");
+  int n = readInt("Digite um número: ");
+  String nStr = n.toString();
+  int potencia = nStr.length;
+  num soma = 0;
+  
+  for (int i = 0; i < potencia; i++) {
+    int digito = int.parse(nStr[i]);
+    soma += pow(digito, potencia);
+  }
+  
+  if (soma == n) {
+    print("O número $n É Narcisista Clássico.");
+  } else {
+    print("O número $n NÃO é Narcisista. (Soma = $soma)");
+  }
+}
+//////////
+// Desafio 14 (Números Amigáveis)
+/// Helper para Desafio 14
+int somaDivisores(int num) {
+  int soma = 0;
+  for (int i = 1; i <= num / 2; i++) {
+    if (num % i == 0) {
+      soma += i;
+    }
+  }
+  return soma;
+}
+
+void desafio14() {
+  print("\n--- Desafio 14: Números Amigáveis ---");
+  int n1 = readInt("Digite o 1º número: ");
+  int n2 = readInt("Digite o 2º número: ");
+  
+  int soma1 = somaDivisores(n1);
+  int soma2 = somaDivisores(n2);
+  
+  if (soma1 == n2 && soma2 == n1) {
+    print("$n1 e $n2 SÃO Amigáveis.");
+  } else {
+    print("$n1 e $n2 NÃO são Amigáveis.");
+  }
+}
+//////////
+// Desafio 15 (Escola de Cursos)
+
+class Curso {
+  String descricao;
+  int qtdAlunos;
+  double mensalidade;
+  Curso(this.descricao, this.qtdAlunos, this.mensalidade);
+  
+  double getReceita() {
+    return qtdAlunos * mensalidade;
+  }
+}
+
+void desafio15() {
+  print("\n--- Desafio 15: Escola de Cursos ---");
+  List<Curso> desafio15Cursos = []; 
+  // 1. Cadastrar Cursos
+  if (desafio15Cursos.isEmpty) {
+    // O original é 3058, usando 3 para teste
+    print("Cadastrando 3 cursos...");
+    for (int i = 1; i <= 3; i++) {
+      print("--- Curso $i ---");
+      desafio15Cursos.add(Curso(
+        readString("  Descrição: "),
+        readInt("  Qtd Alunos: "),
+        readDouble("  Mensalidade: R\$ ")
+      ));
+    }
+  }
+  
+  if (desafio15Cursos.isEmpty) {
+    print("Nenhum curso cadastrado.");
+    return;
+  }
+
+  // a) Média aritmética de alunos
+  int somaAlunos = 0;
+  for (var curso in desafio15Cursos) {
+    somaAlunos += curso.qtdAlunos;
+  }
+  double mediaAlunos = somaAlunos / desafio15Cursos.length;
+  
+  // b) Curso com maior receita
+  double maiorReceita = 0;
+  String descMaiorReceita = "";
+  for (var curso in desafio15Cursos) {
+    double receita = curso.getReceita();
+    if (receita > maiorReceita) {
+      maiorReceita = receita;
+      descMaiorReceita = curso.descricao;
+    }
+  }
+  
+  print("\n--- Resultados ---");
+  print("a) Média de alunos por curso: ${mediaAlunos.toStringAsFixed(1)}");
+  print("b) Curso com maior receita: $descMaiorReceita (R\$ ${maiorReceita.toStringAsFixed(2)})");
+}
+
 
 // Mapa de exercícios para fácil acesso
 final exercicios = <int, Function>{
   1: desafio01, 2: desafio02, 3: desafio03, 4: desafio04, 5: desafio05,
   6: desafio06, 7: desafio07, 8: desafio08, 9: desafio09, 10: desafio10,
+  11: desafio11, 12: desafio12, 13: desafio13, 14: desafio14, 15: desafio15,
 };
 
 // Função principal que exibe o menu e gerencia a execução
@@ -743,6 +854,10 @@ void main() {
     print("9. Relatório de Funcionários");
     print("10. Vetores Desordenados");
     print("11. Vetores Ordenados");
+    print("12. Departamento de Pessoal");
+    print("13. Número Narcisista");
+    print("14. Números Amigáveis");
+    print("15. Escola de Cursos");
 
     print("\n0. Sair");
 
