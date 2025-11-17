@@ -556,7 +556,48 @@ void desafio10() {
 void desafio11(){
   print("\n--- Desafio 11: Vetores Ordenados ---");
   List<int> vetor = [];
-  while (true){}
+  while (true){
+    int valor = readInt("Escolha uma das opções:\n1. Adicionar número ao vetor\n2. Mostrar vetor\n3. Consultar um número no vetor\n4. Excluir um número do vetor\n0. Sair\nOpção: ");
+    switch (valor) {
+      case 1:
+        int numAdicionar = readInt("Digite o número para adicionar: ");
+        vetor.add(numAdicionar);
+        vetor.sort(); // Mantém o vetor ordenado
+        print("Número $numAdicionar adicionado.");
+        break;
+      case 2:
+        print("Vetor atual (ordenado): $vetor");
+        break;
+      case 3:
+        int numConsultar = readInt("Digite o número para consultar: ");
+        if (vetor.contains(numConsultar)) {
+          print("Número $numConsultar encontrado no vetor.");
+        } else {
+          print("Número $numConsultar não encontrado no vetor.");
+        }
+        break;
+      case 4:
+        int numExcluir = readInt("Digite o número para excluir: ");
+        if (vetor.remove(numExcluir)) {
+          print("Número $numExcluir excluído do vetor.");
+        } else {
+          print("Número $numExcluir não encontrado no vetor.");
+        }
+        break;
+      case 0:
+        print("Encerrando o desafio 11.");
+        return;
+      default:
+        print("Opção inválida. Tente novamente.");
+    }
+  }
+}
+
+/////////
+// Desafio 12 (Departamento de Pessoal)
+void desafio12() {
+  print("\n--- Desafio 12: Departamento de Pessoal ---");
+  print("Desafio em construção...");
 }
 
 
